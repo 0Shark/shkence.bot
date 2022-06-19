@@ -1,0 +1,5 @@
+instagrapi==1.16.19
+Pillow==9.1.1
+pyfiglet==0.8.post1
+requests==2.27.1
+urllib3==1.26.9
