@@ -28,8 +28,32 @@ def full_run():
             time.sleep(2)
 
 
+def clear_workspace():
+    # clear insta/stories folder
+    if os.path.exists('insta/stories'):
+        for f in os.listdir('insta/stories'):
+            os.remove(os.path.join('insta/stories', f))
+    else:
+        os.makedirs('insta/stories')
+
+    # clear insta/posts folder
+    if os.path.exists('insta/posts'):
+        for f in os.listdir('insta/posts'):
+            os.remove(os.path.join('insta/posts', f))
+    else:
+        os.makedirs('insta/posts')
+
+    # clear insta/carousels folder
+    if os.path.exists('insta/carousels'):
+        for f in os.listdir('insta/carousels'):
+            os.remove(os.path.join('insta/carousels', f))
+    else:
+        os.makedirs('insta/carousels')
+
+
 def main(choice):
     if choice == 1:
+        clear_workspace()
         print("shkence.bot: Running full run...")
         full_run()
 
@@ -39,6 +63,7 @@ def main(choice):
         scraper(DOMAIN, num_posts)
 
     elif choice == 3:
+        clear_workspace()
         print("shkence.bot: Generating posts and story images...")
         with open('assets/json/posts.json') as posts_file:
             posts = json.load(posts_file)
@@ -48,6 +73,7 @@ def main(choice):
                 create_story_image(p['id'])
 
     elif choice == 4:
+        clear_workspace()
         print("shkence.bot: Generating only post images...")
         with open('assets/json/posts.json') as posts_file:
             posts = json.load(posts_file)
@@ -109,19 +135,7 @@ def main(choice):
                         post_paths.append(f'insta/carousels/{p["id"]}/{file}')
                 post_carousel(p["id"], post_paths)
     elif choice == 10:
-        # clear insta/stories folder
-        if os.path.exists('insta/stories'):
-            for f in os.listdir('insta/stories'):
-                os.remove(os.path.join('insta/stories', f))
-        else:
-            os.makedirs('insta/stories')
-
-        # clear insta/posts folder
-        if os.path.exists('insta/posts'):
-            for f in os.listdir('insta/posts'):
-                os.remove(os.path.join('insta/posts', f))
-        else:
-            os.makedirs('insta/posts')
+        clear_workspace()
 
     elif choice == 11:
         exit()

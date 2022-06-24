@@ -113,7 +113,7 @@ if __name__ == "__main__":
         if post_type == "post":
             post_post(post_id)
         elif post_type == "story":
-            post_link = sys.argv[4]
+            post_link = sys.argv[3]
             post_story(post_id, post_link)
         elif post_type == "carousel":
             post_paths = []

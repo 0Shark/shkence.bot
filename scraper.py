@@ -41,6 +41,13 @@ asset_dir = "assets/thumbnails/"
 
 def get_post_data(url, posts_num):
 
+    # clear assets/thumbnails folder
+    if os.path.exists('assets/thumbnails'):
+        for f in os.listdir('assets/thumbnails'):
+            os.remove(os.path.join('assets/thumbnails', f))
+    else:
+        os.makedirs('assets/thumbnails')
+
     if url[:8] != "https://":
         url = "https://" + url
 

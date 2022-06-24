@@ -1,0 +1,5 @@
+/__pycache__
+assets/thumbnails/*.jpg
+insta/posts/*.jpg
+insta/stories/*.jpg
+config.py
