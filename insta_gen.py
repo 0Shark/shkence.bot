@@ -31,6 +31,7 @@ import time
 import html
 
 from PIL import Image, ImageDraw, ImageFont
+from console import progress_bar
 
 font_path = 'assets/fonts/poppins.ttf'
 
@@ -90,7 +91,7 @@ def get_resized_post_image(post_id, width, height):
 
 # Generate post image
 def create_post_image(post_id):
-    start_time = time.time()
+    # start_time = time.time()
     post_id = int(post_id)
     if not os.path.exists('assets/thumbnails'):
         os.makedirs('assets/thumbnails')
@@ -103,7 +104,7 @@ def create_post_image(post_id):
         print(f'[INFO] Post id {post_id} not found.')
         return None
 
-    print(f'[INFO] Creating post image for post id {post_id}...')
+    # print(f'[INFO] Creating post image for post id {post_id}...')
 
     post_image = get_resized_post_image(post_id, 1080, 1350)
     post_image_text = get_post_image_text(post_id)
@@ -127,6 +128,9 @@ def create_post_image(post_id):
 
     # Add title text
     for i, line in enumerate(post_image_title):
+        # If it's 3rd line and we still have text, we add ellipsis
+        if i == 2 and len(post_image_title) > 3:
+            line += '...'
         # Getting text dimensions
         title_width, title_height = post_image_draw.textsize(
             line, font=post_image_font)
@@ -152,17 +156,17 @@ def create_post_image(post_id):
 
     post_image.convert('RGB').save(f'insta/posts/{post_id}.jpg')
 
-    elapsed_time = time.time() - start_time
+    # elapsed_time = time.time() - start_time
 
-    print(
-        f'[INFO] Created post image for post id {post_id} in {elapsed_time*1000:.2f}ms.')
+    # print(
+    #     f'[INFO] Created post image for post id {post_id} in {elapsed_time*1000:.2f}ms.')
 
     return f'insta/posts/{post_id}.jpg'
 
 
 # Generate story image
 def create_story_image(post_id):
-    start_time = time.time()
+    # start_time = time.time()
     post_id = int(post_id)
 
     if not os.path.exists(f'assets/thumbnails/{post_id}.jpg'):
@@ -173,7 +177,7 @@ def create_story_image(post_id):
         print(f'[INFO] Post id {post_id} not found.')
         return None
 
-    print(f'[INFO] Creating story image for post id {post_id}...')
+    # print(f'[INFO] Creating story image for post id {post_id}...')
 
     post_image = get_resized_post_image(post_id, 720, 1280)
     post_image_text = get_post_image_text(post_id)
@@ -196,6 +200,9 @@ def create_story_image(post_id):
                          fill='white', font=post_image_category_font)
     # Add title text
     for i, line in enumerate(post_image_title):
+        # If it's 3rd line and we still have text, we add ellipsis
+        if i == 2 and len(post_image_title) > 3:
+            line += '...'
         # Getting text dimensions
         title_width, title_height = post_image_draw.textsize(
             line, font=post_image_font)
@@ -220,9 +227,9 @@ def create_story_image(post_id):
         return None
         
     post_image.convert('RGB').save(f'insta/stories/{post_id}.jpg')
-    elapsed_time = time.time() - start_time
-    print(
-        f'[INFO] Created story image for post id {post_id} in {elapsed_time*1000:.2f}ms.')
+    # elapsed_time = time.time() - start_time
+    # print(
+    #     f'[INFO] Created story image for post id {post_id} in {elapsed_time*1000:.2f}ms.')
 
     return f'insta/stories/{post_id}.jpg'
 

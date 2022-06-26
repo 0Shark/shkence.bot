@@ -32,21 +32,24 @@ def clear_workspace():
     # clear insta/stories folder
     if os.path.exists('insta/stories'):
         for f in os.listdir('insta/stories'):
-            os.remove(os.path.join('insta/stories', f))
+            if f.endswith(".jpg") or f.endswith(".png"):
+                os.remove(f'insta/stories/{f}')
     else:
         os.makedirs('insta/stories')
 
     # clear insta/posts folder
     if os.path.exists('insta/posts'):
         for f in os.listdir('insta/posts'):
-            os.remove(os.path.join('insta/posts', f))
+            if f.endswith(".jpg") or f.endswith(".png"):
+                os.remove(os.path.join('insta/posts', f))
     else:
         os.makedirs('insta/posts')
 
     # clear insta/carousels folder
     if os.path.exists('insta/carousels'):
         for f in os.listdir('insta/carousels'):
-            os.remove(os.path.join('insta/carousels', f))
+            if f.endswith(".jpg") or f.endswith(".png"):
+                os.remove(os.path.join('insta/carousels', f))
     else:
         os.makedirs('insta/carousels')
 
