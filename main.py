@@ -11,8 +11,9 @@ from insta_post import login, post_post, post_story, post_carousel
 
 def repo_update():
     repo = git.Repo('./')
-    origin = repo.remote('origin')
-    origin.pull()
+    repo.git.reset('--hard')
+    repo.remotes.origin.pull()
+    print("shkence.bot: Repository updated.")
 
 
 def full_run():
@@ -136,7 +137,7 @@ def main(choice):
 
     elif choice == 10:
         repo_update()
-        
+
     elif choice == 11:
         exit()
 
