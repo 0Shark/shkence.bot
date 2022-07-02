@@ -28,7 +28,7 @@ import html
 import json
 import os
 import sys
-from config import *
+from config import INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD
 
 from instagrapi import Client
 from instagrapi.story import StoryBuilder

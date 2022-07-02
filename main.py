@@ -14,6 +14,7 @@ def full_run():
     with open('assets/json/posts.json') as posts_file:
         posts = json.load(posts_file)
         post = posts['posts']
+        print("[INFO] Generating post images...")
         for p in post:
             create_post_image(p['id'])
             create_story_image(p['id'])
@@ -26,6 +27,11 @@ def full_run():
         for p in post:
             post_story(p['id'], p['link'])
             time.sleep(2)
+
+
+def scrape_only():
+    num_posts = int(input("Enter number of posts: "))
+    scraper(DOMAIN, num_posts)
 
 
 def clear_workspace():
@@ -62,87 +68,71 @@ def main(choice):
 
     elif choice == 2:
         print("shkence.bot: Running scraper...")
-        num_posts = int(input("Enter number of posts: "))
-        scraper(DOMAIN, num_posts)
+        scrape_only()
 
-    elif choice == 3:
-        clear_workspace()
-        print("shkence.bot: Generating posts and story images...")
+    elif choice == 3 or choice == 4 or choice == 5:
+        clear_workspace() 
         with open('assets/json/posts.json') as posts_file:
             posts = json.load(posts_file)
             post = posts['posts']
             for p in post:
-                create_post_image(p['id'])
-                create_story_image(p['id'])
-
-    elif choice == 4:
-        clear_workspace()
-        print("shkence.bot: Generating only post images...")
-        with open('assets/json/posts.json') as posts_file:
-            posts = json.load(posts_file)
-            post = posts['posts']
-            for p in post:
-                create_post_image(p['id'])
-
-    elif choice == 5:
-        print("shkence.bot: Generating only story images...")
-        with open('assets/json/posts.json') as posts_file:
-            posts = json.load(posts_file)
-            post = posts['posts']
-            for p in post:
-                create_story_image(p['id'])
-
-    elif choice == 6:
-        print("shkence.bot: Posting post and stories...")
+                if choice == 3:
+                    print("shkence.bot: Generating posts and story images...")
+                    create_post_image(p['id'])
+                    create_story_image(p['id'])
+                elif choice == 4:
+                    print("shkence.bot: Generating only post images...")
+                    create_post_image(p['id'])
+                elif choice == 5:
+                    print("shkence.bot: Generating only story images...")
+                    create_story_image(p['id'])
+                    
+    elif choice == 6 or choice == 7 or choice == 8:
         login()
         with open('assets/json/posts.json') as posts_file:
             posts = json.load(posts_file)
             post = posts['posts']
-            for p in post:
-                post_post(p['id'])
-                time.sleep(2)
-            for p in post:
-                post_story(p['id'], p['link'])
-                time.sleep(2)
-
-    elif choice == 7:
-        print("shkence.bot: Posting only posts...")
-        login()
-        with open('assets/json/posts.json') as posts_file:
-            posts = json.load(posts_file)
-            post = posts['posts']
-            for p in post:
-                post_post(p['id'])
-                time.sleep(2)
-
-    elif choice == 8:
-        print("shkence.bot: Posting only stories...")
-        login()
-        with open('assets/json/posts.json') as posts_file:
-            posts = json.load(posts_file)
-            post = posts['posts']
-            for p in post:
-                post_story(p['id'], p['link'])
-                time.sleep(2)
+            if choice == 6:
+                print("shkence.bot: Posting post and stories...")
+                for p in post:
+                    post_post(p['id'])
+                    time.sleep(2)
+                for p in post:
+                    post_story(p['id'], p['link'])
+                    time.sleep(2)
+            elif choice == 7:
+                print("shkence.bot: Posting only posts...")
+                for p in post:
+                    post_post(p['id'])
+                    time.sleep(2)
+            elif choice == 8:
+                print("shkence.bot: Posting only stories...")
+                for p in post:
+                    post_story(p['id'], p['link'])
+                    time.sleep(2)
     
+    # elif choice == 9:
+    #     print("shkence.bot: Posting all carousels...")
+    #     login()
+    #     with open('assets/json/posts.json') as posts_file:
+    #         posts = json.load(posts_file)
+    #         post = posts['posts']
+    #         for p in post:
+    #             post_paths = []
+    #             for file in os.listdir(f'insta/carousels/{p["id"]}'):
+    #                 if file.endswith(".jpg") or file.endswith(".png"):
+    #                     post_paths.append(f'insta/carousels/{p["id"]}/{file}')
+    #             post_carousel(p["id"], post_paths)
+
     elif choice == 9:
-        print("shkence.bot: Posting all carousels...")
-        login()
-        with open('assets/json/posts.json') as posts_file:
-            posts = json.load(posts_file)
-            post = posts['posts']
-            for p in post:
-                post_paths = []
-                for file in os.listdir(f'insta/carousels/{p["id"]}'):
-                    if file.endswith(".jpg") or file.endswith(".png"):
-                        post_paths.append(f'insta/carousels/{p["id"]}/{file}')
-                post_carousel(p["id"], post_paths)
-    elif choice == 10:
         clear_workspace()
 
-    elif choice == 11:
+    elif choice == 10:
         exit()
 
+    else:
+        print("shkence.bot: Invalid choice.")
+        
 
 if __name__ == '__main__':
     main(start_message())

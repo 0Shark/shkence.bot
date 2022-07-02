@@ -30,6 +30,7 @@ import textwrap
 import time
 import html
 
+from colorthief import ColorThief
 from PIL import Image, ImageDraw, ImageFont
 from console import progress_bar
 
@@ -89,6 +90,16 @@ def get_resized_post_image(post_id, width, height):
     return image
 
 
+def get_dominant_color(post_id):
+    # Getting dominant color
+    dominant_color = ColorThief(f'assets/thumbnails/{post_id}.jpg').get_color(quality=1)
+    # If color is too light, make it darker
+    if dominant_color[0] > 200 and dominant_color[1] > 200 and dominant_color[2] > 200:
+        dominant_color = (dominant_color[0] - 50, dominant_color[1] - 50, dominant_color[2] - 50)
+
+    return dominant_color
+
+
 # Generate post image
 def create_post_image(post_id):
     # start_time = time.time()
@@ -125,7 +136,7 @@ def create_post_image(post_id):
     # Adding category text
     post_image_draw.text((35, cat_y), post_image_category,
                          fill='white', font=post_image_category_font)
-
+                         
     # Add title text
     for i, line in enumerate(post_image_title):
         # If it's 3rd line and we still have text, we add ellipsis
@@ -136,6 +147,7 @@ def create_post_image(post_id):
             line, font=post_image_font)
         # Positioning text 70.5% down the image and 30px from the left
         title_y = int(post_image.size[1] * 0.705) + 30 + (i * 80)
+
         # Adding rectangle fill
         post_image_draw.rectangle(
             (30, title_y, title_width + 40, title_y + title_height + 5), fill=(21, 101, 200))

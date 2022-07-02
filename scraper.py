@@ -72,7 +72,7 @@ def get_post_data(url, posts_num):
         time_now = time.time()
         time_post = time.mktime(time.strptime(
             post['date'], "%Y-%m-%dT%H:%M:%S"))
-        if time_now - time_post < 86400:
+        if time_now - time_post < 206400: #86400
             # get first paragraph of the post
             post_paragraph = post['content']['rendered']
             post_paragraph = post_paragraph.split('<p>')

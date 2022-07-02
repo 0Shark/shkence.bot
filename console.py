@@ -32,26 +32,25 @@ def start_message():
     ascii_banner = pyfiglet.figlet_format("shkence.bot")
     print(ascii_banner)
     print("""
-        Version: 2.1
+    Version: 2.1
 
-        Welcome admin!
-        Share your news posts directly to Instagram with ease.
-        
-        You can choose to:
+    Welcome admin!
+    Share your news posts directly to Instagram with ease.
+    
+    You can choose to:
 
-        1. Run all functions (default) [1]
-        2. Run only the scraper [2]
-        3. Run only the post and story generator [3]
-        4. Create only post images from existing scraped posts [4]
-        5. Create only story images from existing scraped posts [5]
-        6. Post post images and story images [6]
-        7. Post only post images [7]
-        8. Post only story images [8]
-        9. Post only carousel images [9]
-        10. Clear all posts and stories [10]
-        11. Exit [11]
+    1.  Full run
+    2.  Scraper
+    3.  Generate posts and stories
+    4.  Generate only posts
+    5.  Generate only stories
+    6.  Post posts and stories
+    7.  Post only posts
+    8.  Post only stories
+    9.  Clear workspace
+    10. Exit
 
-        What would you like to do?
+    What would you like to do?
 
     """)
     return int(input())
