@@ -48,7 +48,8 @@ def start_message():
     7.  Post only posts
     8.  Post only stories
     9.  Clear workspace
-    10. Exit
+    10. Update
+    11. Exit
 
     What would you like to do?
 

@@ -1,11 +1,18 @@
 import time
 import json
 import os
+import git
 from config import DOMAIN
 from console import start_message
 from scraper import scraper
 from insta_gen import create_post_image, create_story_image
 from insta_post import login, post_post, post_story, post_carousel
+
+
+def repo_update():
+    repo = git.Repo('./')
+    origin = repo.remote('origin')
+    origin.pull()
 
 
 def full_run():
@@ -128,6 +135,9 @@ def main(choice):
         clear_workspace()
 
     elif choice == 10:
+        repo_update()
+        
+    elif choice == 11:
         exit()
 
     else:
