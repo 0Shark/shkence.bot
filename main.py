@@ -33,7 +33,7 @@ def full_run():
             time.sleep(2)
         print("[INFO] Posting story images...")
         for p in post:
-            post_story(p['id'], p['link'])
+            post_story(p['id'], DOMAIN)
             time.sleep(2)
 
 
@@ -106,7 +106,7 @@ def main(choice):
                     post_post(p['id'])
                     time.sleep(2)
                 for p in post:
-                    post_story(p['id'], p['link'])
+                    post_story(p['id'], DOMAIN)
                     time.sleep(2)
             elif choice == 7:
                 print("shkence.bot: Posting only posts...")
@@ -116,7 +116,7 @@ def main(choice):
             elif choice == 8:
                 print("shkence.bot: Posting only stories...")
                 for p in post:
-                    post_story(p['id'], p['link'])
+                    post_story(p['id'], DOMAIN)
                     time.sleep(2)
     
     # elif choice == 9:
