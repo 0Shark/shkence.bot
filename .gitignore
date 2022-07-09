@@ -3,4 +3,3 @@ assets/thumbnails/*.jpg
 insta/posts/*.jpg
 insta/stories/*.jpg
 assets/json/*.json
-config.py

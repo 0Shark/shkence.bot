@@ -2,7 +2,7 @@ import time
 import json
 import os
 import git
-from config import DOMAIN
+from config import DOMAIN, promt_login
 from console import start_message
 from scraper import scraper
 from insta_gen import create_post_image, create_story_image
@@ -139,8 +139,12 @@ def main(choice):
         repo_update()
 
     elif choice == 11:
-        exit()
+        promt_login()
 
+    elif choice == 12:
+        print("shkence.bot: Exiting...")
+        exit()
+        
     else:
         print("shkence.bot: Invalid choice.")
         
