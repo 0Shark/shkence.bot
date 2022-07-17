@@ -2,4 +2,5 @@
 assets/thumbnails/*.jpg
 insta/posts/*.jpg
 insta/stories/*.jpg
+insta/carousels/
 assets/json/*.json

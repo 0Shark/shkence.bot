@@ -1,4 +1,4 @@
-'''
+help = '''
     Scraper.py
 
     Scraper is a python script that scrapes data from a website.
@@ -74,10 +74,18 @@ def get_post_data(url, posts_num):
             post['date'], "%Y-%m-%dT%H:%M:%S"))
         if time_now - time_post < 206400: #86400
             # get first paragraph of the post
-            post_paragraph = post['content']['rendered']
-            post_paragraph = post_paragraph.split('<p>')
+            content = post['content']['rendered']
+            post_paragraph = content.split('<p>')
             post_paragraph = post_paragraph[1].split('</p>')
             post_paragraph = post_paragraph[0]
+
+            # get content image if exists
+            # search for img tags and append src
+            content_images = []
+            for img in post['content']['rendered'].split('<img'):
+                if 'src' in img:
+                    content_images.append(img.split('src="')[1].split('"')[0])
+            
 
             # get the category
             category = post['categories'][0]
@@ -97,11 +105,13 @@ def get_post_data(url, posts_num):
             posts.append({
                 'id': post['id'],
                 'title': post['title']['rendered'],
-                'image': requests.get(post['_links']['wp:featuredmedia'][0]['href'], verify=ssl_verify).json()['source_url'],
+                'image': post['featured_image_urls']['full'][0],
+                'content_images': content_images, 
                 'content': post_paragraph,
                 'category': post_category,
                 'tags': post_tags,
-                'link': post['link']
+                'link': post['link'],
+                'carousel': len(content_images) > 0
             })
 
     posts_json = {
@@ -134,6 +144,14 @@ def download_thumbnails(posts):
         try:
             urllib.request.urlretrieve(
                 post['image'], asset_dir + str(post['id']) + '.jpg')
+            try:
+                i = 0
+                for img in post['content_images']:
+                    urllib.request.urlretrieve(
+                        img, asset_dir + str(post['id']) + '_' + str(i) + '.jpg')
+                    i += 1
+            except Exception:
+                pass
         except Exception:
             continue
     
@@ -153,6 +171,7 @@ def scraper(url, post_num):
 if __name__ == "__main__":
     url = sys.argv[1]
     if sys.argv[1] == '-h' or sys.argv[1] == '--help':
+        print(help)
         exit()
 
     posts_num = int(sys.argv[2])

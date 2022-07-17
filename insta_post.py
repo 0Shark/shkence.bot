@@ -1,4 +1,4 @@
-'''
+help = '''
     insta_post.py - Post a picture to instagram
 
     InstaPost can be used to post to instagram.
@@ -73,10 +73,17 @@ def post_post(post_id):
     print(f"[INFO] Posted post {post_id}")
 
 
-def post_carousel(post_id, post_paths):
+def post_carousel(post_id):
     post_id = int(post_id)
     print(f'[INFO] Posting carousel {post_id}')
-    cl.album_upload([post_paths], caption=get_caption(post_id))
+    post_paths = []
+    if os.path.exists(f'insta/posts/{post_id}.jpg'):
+        post_paths.append(f'insta/posts/{post_id}.jpg')
+
+    for file in os.listdir(f'insta/carousels/{post_id}'):
+        if file.endswith(".jpg") or file.endswith(".png"):
+            post_paths.append(f'insta/carousels/{post_id}/{file}')
+    cl.album_upload(post_paths, caption=get_caption(post_id))
     print(f"[INFO] Posted carousel {post_id}")
 
 
@@ -99,12 +106,7 @@ def post_story(post_id, link_url):
 if __name__ == "__main__":
     if len(sys.argv) <= 4:
         if sys.argv[1] == '-h' or sys.argv[1] == '--help':
-            print("[HELP] Usage:")
-            print(
-                "[HELP] python insta_post.py <post_id> <post_type> <post_link> (optional)")
-            print("[HELP] Example:")
-            print(
-                "[HELP] python insta_post.py 123456789 story assets/posts/123456789.jpg https://www.google.com")
+            print(help)
             exit()
 
         post_id = sys.argv[1]
@@ -116,11 +118,8 @@ if __name__ == "__main__":
             post_link = sys.argv[3]
             post_story(post_id, post_link)
         elif post_type == "carousel":
-            post_paths = []
-            for file in os.listdir(f'insta/carousels/{post_id}'):
-                if file.endswith(".jpg") or file.endswith(".png"):
-                    post_paths.append(f'insta/carousels/{post_id}/{file}')
-            post_carousel(post_id, post_paths)
+            post_carousel(post_id)
+
     else:
         print("[ERROR] Missing parameters")
         exit()

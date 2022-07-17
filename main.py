@@ -2,10 +2,11 @@ import time
 import json
 import os
 import git
+import shutil
 from config import DOMAIN, promt_login
 from console import start_message
 from scraper import scraper
-from insta_gen import create_post_image, create_story_image
+from insta_gen import create_post_image, create_story_image, create_carousel_images
 from insta_post import login, post_post, post_story, post_carousel
 
 
@@ -24,12 +25,18 @@ def full_run():
         post = posts['posts']
         print("[INFO] Generating post images...")
         for p in post:
-            create_post_image(p['id'])
+            if p['carousel']:
+                create_carousel_images(p['id'])
+            else:
+                create_post_image(p['id'])
             create_story_image(p['id'])
         login()
         print("[INFO] Posting post images...")
         for p in post:
-            post_post(p['id'])
+            if p['carousel']:
+                post_carousel(p['id'])
+            else:
+                post_post(p['id'])
             time.sleep(2)
         print("[INFO] Posting story images...")
         for p in post:
@@ -60,10 +67,11 @@ def clear_workspace():
         os.makedirs('insta/posts')
 
     # clear insta/carousels folder
-    if os.path.exists('insta/carousels'):
-        for f in os.listdir('insta/carousels'):
-            if f.endswith(".jpg") or f.endswith(".png"):
-                os.remove(os.path.join('insta/carousels', f))
+    if os.path.exists('insta/carousels/'):
+        # delete all folders 
+        for f in os.listdir('insta/carousels/'):
+            if os.path.isdir(f'insta/carousels/{f}'):
+                shutil.rmtree(f'insta/carousels/{f}')
     else:
         os.makedirs('insta/carousels')
 
@@ -86,11 +94,17 @@ def main(choice):
             for p in post:
                 if choice == 3:
                     print("shkence.bot: Generating posts and story images...")
-                    create_post_image(p['id'])
+                    if p['carousel']:
+                        create_carousel_images(p['id'])
+                    else:
+                        create_post_image(p['id'])
                     create_story_image(p['id'])
                 elif choice == 4:
                     print("shkence.bot: Generating only post images...")
-                    create_post_image(p['id'])
+                    if p['carousel']:
+                        create_carousel_images(p['id'])
+                    else:
+                        create_post_image(p['id'])
                 elif choice == 5:
                     print("shkence.bot: Generating only story images...")
                     create_story_image(p['id'])
@@ -103,7 +117,10 @@ def main(choice):
             if choice == 6:
                 print("shkence.bot: Posting post and stories...")
                 for p in post:
-                    post_post(p['id'])
+                    if p['carousel']:
+                        post_carousel(p['id'])
+                    else:
+                        post_post(p['id'])
                     time.sleep(2)
                 for p in post:
                     post_story(p['id'], DOMAIN)
@@ -111,7 +128,10 @@ def main(choice):
             elif choice == 7:
                 print("shkence.bot: Posting only posts...")
                 for p in post:
-                    post_post(p['id'])
+                    if p['carousel']:
+                        post_carousel(p['id'])
+                    else:
+                        post_post(p['id'])
                     time.sleep(2)
             elif choice == 8:
                 print("shkence.bot: Posting only stories...")

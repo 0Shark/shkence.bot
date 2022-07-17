@@ -1,4 +1,4 @@
-'''
+help = '''
     insta_gen.py
     
     InstaGen generates a post image (1080x1350) from the post id given.
@@ -52,7 +52,6 @@ def check_id(post_id):
 
 # Get post image and load on memory
 def get_post_image(post_id):
-    post_id = int(post_id)
     post_image = Image.open(f'assets/thumbnails/{post_id}.jpg')
     return post_image
 
@@ -71,7 +70,6 @@ def get_post_image_text(post_id):
 
 # Resize post image to fit in instagram post
 def get_resized_post_image(post_id, width, height):
-    post_id = int(post_id)
     size = (width, height)
     ratio = width / height
     image = get_post_image(post_id)
@@ -100,6 +98,30 @@ def get_dominant_color(post_id):
     return dominant_color
 
 
+def create_carousel_images(post_id):
+    if not os.path.exists(f'insta/carousels/{post_id}'):
+        os.makedirs(f'insta/carousels/{post_id}')
+    carousel_images = []
+    i = 0
+    if os.path.exists(f'assets/thumbnails/{post_id}.jpg'):
+        carousel_images.append(create_post_image(post_id))
+
+    # get all images that start with {post_id}_
+    for file in os.listdir(f'assets/thumbnails/'):
+        if file.startswith(f'{post_id}_'):
+            try:
+                carousel_image = get_resized_post_image(f'{post_id}_{i}', 1080, 1350)
+                overlay = Image.open('assets/overlay.png')
+                carousel_image.paste(overlay, (0, 0), overlay)
+                carousel_image.convert('RGB').save(
+                    f'insta/carousels/{post_id}/{post_id}_{i}.jpg')
+                carousel_images.append(f'insta/carousels/{post_id}/{post_id}_{i}.jpg')
+            except Exception:
+                pass
+            i += 1
+    return carousel_images
+
+
 # Generate post image
 def create_post_image(post_id):
     # start_time = time.time()
@@ -114,7 +136,7 @@ def create_post_image(post_id):
     if not check_id(post_id):
         print(f'[INFO] Post id {post_id} not found.')
         return None
-
+        
     # print(f'[INFO] Creating post image for post id {post_id}...')
 
     post_image = get_resized_post_image(post_id, 1080, 1350)
@@ -162,6 +184,10 @@ def create_post_image(post_id):
     try:
         overlay = Image.open('assets/overlay.png')
         post_image.paste(overlay, (0, 0), overlay)
+        try:
+            post_content_image.paste(overlay, (0, 0), overlay)
+        except Exception:
+            pass
     except Exception:
         print('[ERROR] Overlay image not found.')
         return None
@@ -251,9 +277,7 @@ if __name__ == '__main__':
         post_id = sys.argv[1]
 
         if sys.argv[1] == '-h' or sys.argv[1] == '--help':
-            print('[HELP] Usage: python3 insta_gen.py <post_id> <image_type>')
-            print('[HELP] Image types: post, story, video, carousel')
-            print('[HELP] Example: python3 insta_gen.py 12345 post')
+            print(help)
             exit()
 
         post_type = sys.argv[2]
@@ -264,6 +288,8 @@ if __name__ == '__main__':
                 post_path = create_post_image(post_id)
             elif post_type == 'story':
                 post_path = create_story_image(post_id)
+            elif post_type == 'carousel':
+                post_paths = create_carousel_images(post_id)
 
             if post_path is not None:
                 print(f'[INFO] Post image saved to {post_path}.')
@@ -273,6 +299,8 @@ if __name__ == '__main__':
                     os.chdir(os.path.dirname(post_path))
                     os.system(f'{os.path.basename(post_path)}')
                     exit()
+            elif post_paths is not None:
+                print(f'[INFO] Carousel images saved to {post_paths}.')
             else:
                 print(f'[ERROR] Post image is already saved.')
                 exit()
