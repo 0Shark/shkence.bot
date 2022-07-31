@@ -138,19 +138,6 @@ def main(choice):
                 for p in post:
                     post_story(p['id'], p['link'])
                     time.sleep(2)
-    
-    # elif choice == 9:
-    #     print("shkence.bot: Posting all carousels...")
-    #     login()
-    #     with open('assets/json/posts.json') as posts_file:
-    #         posts = json.load(posts_file)
-    #         post = posts['posts']
-    #         for p in post:
-    #             post_paths = []
-    #             for file in os.listdir(f'insta/carousels/{p["id"]}'):
-    #                 if file.endswith(".jpg") or file.endswith(".png"):
-    #                     post_paths.append(f'insta/carousels/{p["id"]}/{file}')
-    #             post_carousel(p["id"], post_paths)
 
     elif choice == 9:
         clear_workspace()
