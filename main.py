@@ -68,12 +68,33 @@ def clear_workspace():
 
     # clear insta/carousels folder
     if os.path.exists('insta/carousels/'):
-        # delete all folders 
+        # delete all folders
         for f in os.listdir('insta/carousels/'):
             if os.path.isdir(f'insta/carousels/{f}'):
                 shutil.rmtree(f'insta/carousels/{f}')
     else:
         os.makedirs('insta/carousels')
+
+
+def setup_autobot():
+    print("shkence.bot: Setting up autobot...")
+    posts_per_day = int(
+        input("Enter number of posts you would like to post per day: "))
+    hours_between_posts = int(
+        input("Enter number of hours you would like to wait between posts: "))
+
+    with open('assets/json/settings.json', 'w') as settings_file:
+        settings = {
+            "posts_per_day": posts_per_day,
+            "hours_between_posts": hours_between_posts
+        }
+        json.dump(settings, settings_file, indent=4)
+
+    print("shkence.bot: Autobot setup complete.")
+
+    # Start autobot.py
+    os.system('py autobot.py')
+
 
 
 def main(choice):
@@ -87,7 +108,7 @@ def main(choice):
         scrape_only()
 
     elif choice == 3 or choice == 4 or choice == 5:
-        clear_workspace() 
+        clear_workspace()
         with open('assets/json/posts.json') as posts_file:
             posts = json.load(posts_file)
             post = posts['posts']
@@ -108,7 +129,7 @@ def main(choice):
                 elif choice == 5:
                     print("shkence.bot: Generating only story images...")
                     create_story_image(p['id'])
-                    
+
     elif choice == 6 or choice == 7 or choice == 8:
         login()
         with open('assets/json/posts.json') as posts_file:
@@ -149,12 +170,15 @@ def main(choice):
         promt_login()
 
     elif choice == 12:
+        setup_autobot()
+
+    elif choice == 13:
         print("shkence.bot: Exiting...")
         exit()
-        
+
     else:
         print("shkence.bot: Invalid choice.")
-        
+
 
 if __name__ == '__main__':
     main(start_message())

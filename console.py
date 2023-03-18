@@ -50,7 +50,8 @@ def start_message():
     9.  Clear workspace
     10. Update
     11. Login
-    12. Exit
+    12. Setup Autobot
+    13. Exit
 
     What would you like to do?
 

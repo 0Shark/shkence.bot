@@ -47,6 +47,8 @@ def login(username=INSTAGRAM_USERNAME, password=INSTAGRAM_PASSWORD):
     cl = Client()
     cl.login(username, password)
 
+    return cl
+
 
 def get_caption(post_id):
     post_data = []
