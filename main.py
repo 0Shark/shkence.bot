@@ -24,24 +24,62 @@ def full_run():
         posts = json.load(posts_file)
         post = posts['posts']
         print("[INFO] Generating post images...")
+        failed_posts = []
         for p in post:
             if p['carousel']:
-                create_carousel_images(p['id'])
+                try:
+                    create_carousel_images(p['id'])
+                except:
+                    print(f"[ERROR] Error generating carousel images for post {p['id']} Skipping...")
+                    failed_posts.append(p)
+                    continue
             else:
-                create_post_image(p['id'])
-            create_story_image(p['id'])
+                try:
+                    create_post_image(p['id'])
+                except:
+                    print(f"[ERROR] Error generating post image for post {p['id']} Skipping...")
+                    failed_posts.append(p)
+                    continue
+            try:
+                create_story_image(p['id'])
+            except:
+                print(f"[ERROR] Error generating story image for post {p['id']} Skipping...")
+                failed_posts.append(p)
+                continue
+
+        for p in failed_posts:
+            post.remove(p)
+
         login()
         print("[INFO] Posting post images...")
+
+        failed_posts = []
+
         for p in post:
             if p['carousel']:
-                post_carousel(p['id'])
+                try:
+                    post_carousel(p['id'])
+                except:
+                    print(f"[ERROR] Error posting carousel for post {p['id']} Skipping...")
+                    failed_posts.append(p)
+                    continue
             else:
-                post_post(p['id'])
+                try:
+                    post_post(p['id'])
+                except:
+                    print(f"[ERROR] Error posting post {p['id']} Skipping...")
+                    failed_posts.append(p)
+                    continue
             time.sleep(2)
+
         print("[INFO] Posting story images...")
         for p in post:
-            post_story(p['id'], p['link'])
-            time.sleep(2)
+            try:
+                post_story(p['id'], p['link'])
+                time.sleep(2)
+            except:
+                print(f"[ERROR] Error posting story for post {p['id']} Skipping...")
+                continue
 
 
 def scrape_only():
@@ -76,6 +114,7 @@ def clear_workspace():
         os.makedirs('insta/carousels')
 
 
+# Not fully implemented yet
 def setup_autobot():
     print("shkence.bot: Setting up autobot...")
     posts_per_day = int(
@@ -113,22 +152,27 @@ def main(choice):
             posts = json.load(posts_file)
             post = posts['posts']
             for p in post:
-                if choice == 3:
-                    print("shkence.bot: Generating posts and story images...")
-                    if p['carousel']:
-                        create_carousel_images(p['id'])
-                    else:
-                        create_post_image(p['id'])
-                    create_story_image(p['id'])
-                elif choice == 4:
-                    print("shkence.bot: Generating only post images...")
-                    if p['carousel']:
-                        create_carousel_images(p['id'])
-                    else:
-                        create_post_image(p['id'])
-                elif choice == 5:
-                    print("shkence.bot: Generating only story images...")
-                    create_story_image(p['id'])
+                try:
+                    if choice == 3:
+                        print("shkence.bot: Generating posts and story images...")
+                        if p['carousel']:
+                            create_carousel_images(p['id'])
+                        else:
+                            create_post_image(p['id'])
+                        create_story_image(p['id'])
+                    elif choice == 4:
+                        print("shkence.bot: Generating only post images...")
+                        if p['carousel']:
+                            create_carousel_images(p['id'])
+                        else:
+                            create_post_image(p['id'])
+                    elif choice == 5:
+                        print("shkence.bot: Generating only story images...")
+                        create_story_image(p['id'])
+                except:
+                    print(f"[ERROR] Error generating images for post {p['id']} Skipping...")
+                    continue
+
 
     elif choice == 6 or choice == 7 or choice == 8:
         login()
@@ -137,28 +181,50 @@ def main(choice):
             post = posts['posts']
             if choice == 6:
                 print("shkence.bot: Posting post and stories...")
+                failed_posts = []
                 for p in post:
-                    if p['carousel']:
-                        post_carousel(p['id'])
-                    else:
-                        post_post(p['id'])
-                    time.sleep(2)
+                    try:
+                        if p['carousel']:
+                            post_carousel(p['id'])
+                        else:
+                            post_post(p['id'])
+                        time.sleep(2)
+                    except:
+                        print(f"[ERROR] Error posting post {p['id']} Skipping...")
+                        failed_posts.append(p)
+                        continue
+
+                for p in failed_posts:
+                    post.remove(p)
+
                 for p in post:
-                    post_story(p['id'], p['link'])
-                    time.sleep(2)
+                    try:
+                        post_story(p['id'], p['link'])
+                        time.sleep(2)
+                    except:
+                        print(f"[ERROR] Error posting story for post {p['id']} Skipping...")
+                        continue
             elif choice == 7:
                 print("shkence.bot: Posting only posts...")
                 for p in post:
-                    if p['carousel']:
-                        post_carousel(p['id'])
-                    else:
-                        post_post(p['id'])
-                    time.sleep(2)
+                    try:
+                        if p['carousel']:
+                            post_carousel(p['id'])
+                        else:
+                            post_post(p['id'])
+                        time.sleep(2)
+                    except:
+                        print(f"[ERROR] Error posting post {p['id']} Skipping...")
+                        continue
             elif choice == 8:
                 print("shkence.bot: Posting only stories...")
                 for p in post:
-                    post_story(p['id'], p['link'])
-                    time.sleep(2)
+                    try:
+                        post_story(p['id'], p['link'])
+                        time.sleep(2)
+                    except:
+                        print(f"[ERROR] Error posting story for post {p['id']} Skipping...")
+                        continue
 
     elif choice == 9:
         clear_workspace()
