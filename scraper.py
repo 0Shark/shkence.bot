@@ -102,10 +102,16 @@ def get_post_data(url, posts_num):
                 response = requests.get(endpoint, verify=ssl_verify)
                 post_tags.append(response.json()['name'].replace(' ', ''))
 
+            # get featured image url
+            endpoint = url + '/wp-json/wp/v2/media/' + \
+                str(post['featured_media'])
+            response = requests.get(endpoint, verify=ssl_verify)
+            post['featured_image_urls'] = response.json()['media_details']['sizes']
+
             posts.append({
                 'id': post['id'],
                 'title': post['title']['rendered'],
-                'image': post['featured_image_urls']['full'][0],
+                'image': post['featured_image_urls']['full']['source_url'],
                 'content_images': content_images, 
                 'content': post_paragraph,
                 'category': post_category,
