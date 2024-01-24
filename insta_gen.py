@@ -33,6 +33,8 @@ import html
 from colorthief import ColorThief
 from PIL import Image, ImageDraw, ImageFont
 from console import progress_bar
+import textwrap
+import html
 
 font_path = 'assets/fonts/poppins.ttf'
 
@@ -148,8 +150,11 @@ def create_post_image(post_id):
     post_image_draw = ImageDraw.Draw(post_image)
 
     # Getting text dimensions
-    cat_width, cat_height = post_image_draw.textsize(
-        post_image_category, font=post_image_category_font)
+    cat_width_x1, cat_height_y1, cat_width_x2, cat_height_y2 = post_image_draw.textbbox(
+        (0, 0), text=post_image_category, font=post_image_category_font)
+    
+    cat_width = cat_width_x2 - cat_width_x1 + 10
+    cat_height = cat_height_y2 - cat_height_y1 + 10
     # Positioning text 68% down the image and 30px from the left
     cat_y = int(post_image.size[1] * 0.68)
     # Adding rectangle fill
@@ -165,8 +170,12 @@ def create_post_image(post_id):
         if i == 2 and len(post_image_title) > 3:
             line += '...'
         # Getting text dimensions
-        title_width, title_height = post_image_draw.textsize(
-            line, font=post_image_font)
+        title_width_x1, title_height_y1, title_width_x2, title_height_y2 = post_image_draw.textbbox(
+            (0, 0), text=line, font=post_image_font)
+        
+        title_width = title_width_x2 - title_width_x1 + 10
+        title_height = title_height_y2 - title_height_y1 + 10
+        
         # Positioning text 70.5% down the image and 30px from the left
         title_y = int(post_image.size[1] * 0.705) + 30 + (i * 80)
 
@@ -226,8 +235,12 @@ def create_story_image(post_id):
     post_image_draw = ImageDraw.Draw(post_image)
 
     # Getting text dimensions
-    cat_width, cat_height = post_image_draw.textsize(
-        post_image_category, font=post_image_category_font)
+    cat_width_x1, cat_height_y1, cat_width_x2, cat_height_y2 = post_image_draw.textbbox(
+        (0, 0), text=post_image_category, font=post_image_category_font)
+    
+    cat_width = cat_width_x2 - cat_width_x1 + 10
+    cat_height = cat_height_y2 - cat_height_y1 + 10
+    
     # Positioning text 68% down the image and 30px from the left
     cat_y = int(post_image.size[1] * 0.68)
     # Adding rectangle fill
@@ -242,8 +255,12 @@ def create_story_image(post_id):
         if i == 2 and len(post_image_title) > 3:
             line += '...'
         # Getting text dimensions
-        title_width, title_height = post_image_draw.textsize(
-            line, font=post_image_font)
+        title_width_x1, title_height_y1, title_width_x2, title_height_y2 = post_image_draw.textbbox(
+            (0, 0), text=line, font=post_image_font)
+        
+        title_width = title_width_x2 - title_width_x1 + 10
+        title_height = title_height_y2 - title_height_y1 + 10
+        
         # Positioning text 70.5% down the image and 30px from the left
         title_y = int(post_image.size[1] * 0.705) + 30 + (i * 70)
         # Adding rectangle fill

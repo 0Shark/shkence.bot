@@ -29,20 +29,23 @@ def full_run():
             if p['carousel']:
                 try:
                     create_carousel_images(p['id'])
-                except:
+                except Exception as e:
+                    print(e)
                     print(f"[ERROR] Error generating carousel images for post {p['id']} Skipping...")
                     failed_posts.append(p)
                     continue
             else:
                 try:
                     create_post_image(p['id'])
-                except:
+                except Exception as e:
+                    print(e)
                     print(f"[ERROR] Error generating post image for post {p['id']} Skipping...")
                     failed_posts.append(p)
                     continue
             try:
                 create_story_image(p['id'])
-            except:
+            except Exception as e:
+                print(e)
                 print(f"[ERROR] Error generating story image for post {p['id']} Skipping...")
                 failed_posts.append(p)
                 continue
@@ -169,7 +172,8 @@ def main(choice):
                     elif choice == 5:
                         print("shkence.bot: Generating only story images...")
                         create_story_image(p['id'])
-                except:
+                except Exception as e:
+                    print(e)
                     print(f"[ERROR] Error generating images for post {p['id']} Skipping...")
                     continue
 
