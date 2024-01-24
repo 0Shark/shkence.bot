@@ -62,14 +62,16 @@ def full_run():
             if p['carousel']:
                 try:
                     post_carousel(p['id'])
-                except:
+                except Exception as e:
+                    print(e)
                     print(f"[ERROR] Error posting carousel for post {p['id']} Skipping...")
                     failed_posts.append(p)
                     continue
             else:
                 try:
                     post_post(p['id'])
-                except:
+                except Exception as e:
+                    print(e)
                     print(f"[ERROR] Error posting post {p['id']} Skipping...")
                     failed_posts.append(p)
                     continue
@@ -80,7 +82,8 @@ def full_run():
             try:
                 post_story(p['id'], p['link'])
                 time.sleep(2)
-            except:
+            except Exception as e:
+                print(e)
                 print(f"[ERROR] Error posting story for post {p['id']} Skipping...")
                 continue
 
@@ -193,7 +196,8 @@ def main(choice):
                         else:
                             post_post(p['id'])
                         time.sleep(2)
-                    except:
+                    except Exception as e:
+                        print(e)
                         print(f"[ERROR] Error posting post {p['id']} Skipping...")
                         failed_posts.append(p)
                         continue
@@ -205,7 +209,8 @@ def main(choice):
                     try:
                         post_story(p['id'], p['link'])
                         time.sleep(2)
-                    except:
+                    except Exception as e:
+                        print(e)
                         print(f"[ERROR] Error posting story for post {p['id']} Skipping...")
                         continue
             elif choice == 7:
@@ -217,7 +222,8 @@ def main(choice):
                         else:
                             post_post(p['id'])
                         time.sleep(2)
-                    except:
+                    except Exception as e:
+                        print(e)
                         print(f"[ERROR] Error posting post {p['id']} Skipping...")
                         continue
             elif choice == 8:
@@ -226,7 +232,8 @@ def main(choice):
                     try:
                         post_story(p['id'], p['link'])
                         time.sleep(2)
-                    except:
+                    except Exception as e:
+                        print(e)
                         print(f"[ERROR] Error posting story for post {p['id']} Skipping...")
                         continue
 
