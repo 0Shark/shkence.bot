@@ -92,9 +92,15 @@ def post_carousel(post_id):
 def post_story(post_id, link_url):
     post_id = int(post_id)
     print(f'[INFO] Posting story {post_id}')
-    buildout = StoryBuilder(
-        f'insta/stories/{post_id}.jpg',
-    ).photo(5)  
+    
+    try:
+        buildout = StoryBuilder(
+            f'insta/stories/{post_id}.jpg',
+        ).photo(5)  
+    except Exception as e:
+        print(e)
+        print(f"[ERROR] Error generating story for post {post_id}")
+        return
 
     cl.video_upload_to_story(
         buildout.path, 
