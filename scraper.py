@@ -86,6 +86,8 @@ def get_post_data(url, posts_num):
                 if 'src' in img:
                     content_images.append(img.split('src="')[1].split('"')[0])
             
+            # remove duplicate images
+            content_images = list(dict.fromkeys(content_images))
 
             # get the category
             category = post['categories'][0]
@@ -107,7 +109,7 @@ def get_post_data(url, posts_num):
                 str(post['featured_media'])
             response = requests.get(endpoint, verify=ssl_verify)
             post['featured_image_urls'] = response.json()['media_details']['sizes']
-
+            
             posts.append({
                 'id': post['id'],
                 'title': post['title']['rendered'],
